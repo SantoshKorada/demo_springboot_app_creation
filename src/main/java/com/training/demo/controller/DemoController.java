@@ -3,6 +3,8 @@ package com.training.demo.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.training.demo.request.StudentRequest;
+import com.training.demo.response.StudentResponse;
+import com.training.demo.service.StudentActions;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,7 +26,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class DemoController {
 
-	List<StudentRequest> studentList = new ArrayList<>();
+	@Autowired
+	StudentActions studentActions;
 
 	@GetMapping("message/{input1}")
 	public String message(@PathVariable("input1") String input1) {
@@ -40,35 +45,33 @@ public class DemoController {
 	}
 
 	@GetMapping("get-students")
-	public List<StudentRequest> getStudentsList() {
-		log.info("Students list :: {}", studentList);
-		return studentList;
+	public List<StudentResponse> getStudentsList() {
+		List<StudentResponse> studentsList = studentActions.getAllStudents();
+		return studentsList;
 	}
 
 	@PostMapping("create-student")
-	public StudentRequest createStudent(@RequestBody StudentRequest studentRequest) {
-		log.info(studentRequest.toString());
-		studentList.add(studentRequest);
-		return studentRequest;
+	public StudentResponse createStudent(@RequestBody StudentRequest studentRequest) {
+		
+		StudentResponse studentResponse = studentActions.addStudent(studentRequest);
+		return studentResponse;
 	}
 
-	@PutMapping("update-student/{id}")
-	public StudentRequest updateStudent(@PathVariable("id") Integer id, @RequestBody StudentRequest studentRequest) {
-		log.info("*** update student ***");
-		log.info("Id :: " + id);
-		for (StudentRequest studentData : studentList) {
-			if (studentData.getId() == id) {
-				studentData.setName(studentRequest.getName());
-				studentData.setAge(studentRequest.getAge());
-				studentData.setPhoneNumber(studentRequest.getPhoneNumber());
-				return studentRequest;
-			} else {
-				log.info("Student is not present");
-			}
-		}
-		return studentRequest;
-	}
-
-
+//	@PutMapping("update-student/{id}")
+//	public StudentRequest updateStudent(@PathVariable("id") Integer id, @RequestBody StudentRequest studentRequest) {
+//		log.info("*** update student ***");
+//		log.info("Id :: " + id);
+//		for (StudentRequest studentData : studentList) {
+////			if (studentData.getId() == id) {
+////				studentData.setName(studentRequest.getName());
+////				studentData.setAge(studentRequest.getAge());
+////				studentData.setPhoneNumber(studentRequest.getPhoneNumber());
+////				return studentRequest;
+////			} else {
+////				log.info("Student is not present");
+////			}
+//		}
+//		return studentRequest;
+//	}
 
 }

@@ -1,6 +1,4 @@
-package com.training.demo.request;
-
-import com.training.demo.response.StudentResponse;
+package com.training.demo.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,8 +9,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Builder
-public class StudentRequest {
+public class StudentResponse {
 
+	private Integer id;
 	private String name;
 	private Integer age;
 	private Long phoneNumber;
