@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -52,26 +53,22 @@ public class DemoController {
 
 	@PostMapping("create-student")
 	public StudentResponse createStudent(@RequestBody StudentRequest studentRequest) {
-		
 		StudentResponse studentResponse = studentActions.addStudent(studentRequest);
 		return studentResponse;
 	}
 
-//	@PutMapping("update-student/{id}")
-//	public StudentRequest updateStudent(@PathVariable("id") Integer id, @RequestBody StudentRequest studentRequest) {
-//		log.info("*** update student ***");
-//		log.info("Id :: " + id);
-//		for (StudentRequest studentData : studentList) {
-////			if (studentData.getId() == id) {
-////				studentData.setName(studentRequest.getName());
-////				studentData.setAge(studentRequest.getAge());
-////				studentData.setPhoneNumber(studentRequest.getPhoneNumber());
-////				return studentRequest;
-////			} else {
-////				log.info("Student is not present");
-////			}
-//		}
-//		return studentRequest;
-//	}
+	@PutMapping("update-student/{id}")
+	public StudentResponse updateStudent(@PathVariable("id") Integer id, @RequestBody StudentRequest studentRequest) {
+		log.info("*** update student ***");
+		log.info("Id :: " + id);
+		StudentResponse studentResponse = studentActions.updateStudent(studentRequest, id);
+		return studentResponse;
+	}
+
+	@DeleteMapping("delete-student/{id}")
+	public void deleteStudent(@PathVariable("id") Integer id) {
+		studentActions.deleteStudent(id);
+		return;
+	}
 
 }
